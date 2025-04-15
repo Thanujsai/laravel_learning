@@ -15,6 +15,7 @@
             <a href="/contact">Contact</a>
         </nav>
 
-    <?php echo $slot ?>
+     {{-- <?php echo $slot ?> --}}
+    {{ $slot }}{{-- both the above stmt and this stmt is the same thing --}}{{-- the navbar etc etc is the same for all the file which uses this templates, the all the other specific things of that particualr page, they go to this slot --}}
     </body>
 </html>
