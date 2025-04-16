@@ -2,38 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Arr;
-
-
-$jobs = [
-    [
-        'id' => 1,
-        'title' => 'Director',
-        'salary' => '$50,000',
-    ],
-    [
-        'id' => 2,
-        'title' => 'Programmer',
-        'salary' => '$10,000',
-    ],
-    [
-        'id' => 3,
-        'title' => 'Teacher',
-        'salary' => '$40,000',
-    ],
-];
+use App\Models\Job;//importing the Job class
 
 Route::get('/', function () {
     return view('welcome');//passing an array to the view
 });
 
-Route::get('/jobs', function () use ($jobs) {
+Route::get('/jobs', function () {
     return view('jobs', [
-        'jobs' => $jobs
+        'jobs' => Job::all(),//using the Job class to get all the jobs
     ]);
 });
 
-Route::get('/jobs/{id}', function ($id) use ($jobs){//endpoint with id var
-    $job = Arr::first($jobs,fn($job) => $job['id'] == $id);//using the Arr class to get the first item from the array);,get the first item from the array which matches the id mentioned
+Route::get('/jobs/{id}', function ($id){//endpoint with id var
+    $job = Job::find($id);//using the Job class to get the job with the id
 
     //dd($job);//to check if the id is working
     return view('job',[
