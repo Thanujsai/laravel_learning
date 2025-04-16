@@ -26,6 +26,12 @@ class Job{
     }
 
     public static function find(int $id) : array { //returning an array
-        return Arr::first(static::all(),fn($job) => $job['id'] == $id);//using the Arr class to get the first item from the array);,get the first item from the array which matches the id mentioned, static means we are referring this current class
+        $job = Arr::first(static::all(),fn($job) => $job['id'] == $id);//using the Arr class to get the first item from the array);,get the first item from the array which matches the id mentioned, static means we are referring this current class
+
+        if(! $job) {
+            abort(404);//if the job is not found, return 404 error
+        }
+
+        return $job;//return the job
     }
 }
