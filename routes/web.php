@@ -3,7 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome', [
+    return view('welcome');//passing an array to the view
+});
+
+Route::get('/jobs', function () {
+    return view('jobs', [
         'jobs' => [
             [
                 'title' => 'Director',
@@ -18,11 +22,7 @@ Route::get('/', function () {
                 'salary' => '$40,000',
             ],
         ]
-    ]);//passing an array to the view
-});
-
-Route::get('/about', function () {
-    return view('about');
+    ]);
 });
 
 Route::get('/contact', function () {
