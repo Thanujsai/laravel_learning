@@ -1,13 +1,59 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Arr;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome');//passing an array to the view
 });
 
-Route::get('/about', function () {
-    return view('about');
+Route::get('/jobs', function () {
+    return view('jobs', [
+        'jobs' => [
+            [
+                'id' => 1,
+                'title' => 'Director',
+                'salary' => '$50,000',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Programmer',
+                'salary' => '$10,000',
+            ],
+            [
+                'id' => 3,
+                'title' => 'Teacher',
+                'salary' => '$40,000',
+            ],
+        ]
+    ]);
+});
+
+Route::get('/jobs/{id}', function ($id) {//endpoint with id var
+    $jobs = [
+            [
+                'id' => 1,
+                'title' => 'Director',
+                'salary' => '$50,000',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Programmer',
+                'salary' => '$10,000',
+            ],
+            [
+                'id' => 3,
+                'title' => 'Teacher',
+                'salary' => '$40,000',
+            ],
+        ];
+
+    $job = Arr::first($jobs,fn($job) => $job['id'] == $id);//using the Arr class to get the first item from the array);,get the first item from the array which matches the id mentioned
+
+    //dd($job);//to check if the id is working
+    return view('job',[
+        'job' => $job,//sending the prop job to the view
+    ]);
 });
 
 Route::get('/contact', function () {
