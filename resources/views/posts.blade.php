@@ -7,7 +7,7 @@
         @foreach ($posts as $post){{-- getting this posts variable from the endpoint defined in web.php --}}
             <li>
                 <a href="/posts/{{ $post['id'] }}" class="text-blue-500 hover:text-blue-700">
-                    <b>Title</b> : {{$post['title']}}, <b>Description</b> : {{$post['description']}}
+                    <b>Title</b> : {{$post['title']}}, <b>Description</b> : {{$post['description']}}<br></br>
                 </a>
             </li>
         @endforeach

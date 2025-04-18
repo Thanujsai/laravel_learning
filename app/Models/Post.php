@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'description'];//these are the fields that we want to be mass assignable, so we can use the create method to create a new job
+    use HasFactory;
+    protected $table = 'posts'; // Specify the table name if it doesn't follow Laravel's naming convention
+    protected $fillable = ['title', 'description']; // Specify the fillable fields for mass assignment
 }
