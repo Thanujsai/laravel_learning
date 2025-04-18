@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_listings', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');//title and salary are the fields in our job model, it needs to be present in the table too, so we need to create the table with these fields
-            $table->string('salary');
             $table->timestamps();
+            $table->string('title');
+            $table->string('description');
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_listings');
+        Schema::dropIfExists('posts');
     }
 };
