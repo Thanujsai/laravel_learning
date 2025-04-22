@@ -3,8 +3,8 @@
         Job Listings Page
     </x-slot:heading>
 
-    <h2><b>Title</b> : {{ $job['title'] }}</h2>{{/* this job variable is coming from the endpoint defined in web.php */}}
-    <p><b>Salary</b> : {{ $job['salary'] }}</p>{{/* this salary variable is coming from the endpoint defined in web.php */}}
+    <h2><b>Title</b> : {{ $job['title'] }}</h2>{{-- this job variable is coming from the endpoint defined in web.php --}}
+    <p><b>Salary</b> : {{ $job['salary'] }}</p>{{-- this salary variable is coming from the endpoint defined in web.php --}}
     @php $tagNumber = 0; @endphp
     <ul>
         @foreach ($job->tags as $tag)

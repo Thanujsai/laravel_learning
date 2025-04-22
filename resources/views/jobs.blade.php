@@ -3,13 +3,11 @@
         Job Listings Page
     </x-slot:heading>
 
-    <ul>
+    <div class="space-y-4">
         @foreach ($jobs as $job){{-- getting this jobs variable from the endpoint defined in web.php --}}
-            <li>
-                <a href="/jobs/{{ $job['id'] }}" class="text-blue-500 hover:text-blue-700">
-                    <b>Title</b> : {{$job['title']}}, <b>Salary</b> : {{$job['salary']}}
-                </a>
-            </li>
+            <a href="/jobs/{{ $job['id'] }}" class="block px-4 py-6 border border-gray-200 rounded hover:text-blue-500">
+                <b>Title</b> : {{$job['title']}}, <b>Salary</b> : {{$job['salary']}}
+            </a>
         @endforeach
-    </ul>
+    </div>
 </x-layout>
