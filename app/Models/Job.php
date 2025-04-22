@@ -20,4 +20,9 @@ class Job extends Model{ //to make a php class into the eloquent model it just n
     // One Employer can have many Jobs.
     // Each Job belongs to one Employer.
     //Employer is there is hire for a job, therefore an employer can have mutiple jobs, therefore job belongs to an employer.
+
+    public function tags()//a job listing can have many tags, that is the relation
+    {
+        return $this->belongsToMany(Tag::class, foreignPivotKey: "job_listing_id");//since the foreign key is not job_id but job_listing_id, we need to specify the foreign key name, otherwise it's not necessary
+    }
 }

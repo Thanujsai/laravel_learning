@@ -10,4 +10,8 @@ class Post extends Model
     use HasFactory;
     protected $table = 'posts'; // Specify the table name if it doesn't follow Laravel's naming convention
     protected $fillable = ['title', 'description']; // Specify the fillable fields for mass assignment
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class, foreignPivotKey: "post_id"); // Specify the foreign key if it's not the default
+    } 
 }

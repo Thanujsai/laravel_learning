@@ -5,4 +5,12 @@
 
     <h2><b>Title</b> : {{ $post['title'] }}</h2>
     <p><b>Description</b> : {{ $post['description'] }}</p>
+    @php $tagNumber = 0; @endphp
+    <ul>
+        @foreach ($post->tags as $tag)
+            <li>
+                <b>Tag {{ ++$tagNumber }}</b> : {{$tag['name']}}
+            </li>
+        @endforeach
+    </ul>
 </x-layout>

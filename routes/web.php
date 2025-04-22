@@ -18,7 +18,7 @@ Route::get('/jobs', function () {
 });
 
 Route::get('/jobs/{id}', function ($id){//endpoint with id var
-    $job = Job::find($id);//using the Job class to get the job with the id
+    $job = Job::with('tags')->find($id);//fetch the job with this ID, and also fetch its related tags in the same database query.
 
     //dd($job);//to check if the id is working
     return view('job',[
@@ -37,7 +37,7 @@ Route::get('/posts', function () {
 });
 
 Route::get('/posts/{id}', function ($id){//endpoint with id var
-    $post = Post::find($id);//using the Post class to get the post with the id
+    $post = Post::with('tags')->find($id);//using the Post class to get the post with the id
 
     //dd($post);//to check if the id is working
     return view('post',[
