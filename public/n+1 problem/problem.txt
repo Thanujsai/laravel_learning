@@ -1,0 +1,15 @@
+Very identical queries are running multiple times.
+
+The N+1 problem happens when your app makes 1 query to get a list of items (like jobs), but for each item, it makes another query to get related data (like employer). That means:
+
+1 query for all jobs
+
++1 query per job to fetch its employer
+
+So if you have 10 jobs → that’s 11 queries
+
+
+Another solution is to prevent lazy loading by adding this line
+        Model::preventLazyLoading();
+
+in boot method of AppServiceProvider.
