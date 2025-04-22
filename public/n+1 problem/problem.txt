@@ -13,3 +13,56 @@ Another solution is to prevent lazy loading by adding this line
         Model::preventLazyLoading();
 
 in boot method of AppServiceProvider.
+
+
+.
+
+🐢 N+1 Problem — Lazy Loading (Bad)
+You have two models:
+
+Post model
+
+Comment model
+
+🧠 Relationships
+In Post.php:
+
+public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+🐌 Controller (Lazy Loading)
+$posts = Post::all(); // 1 query to fetch all posts
+
+foreach ($posts as $post) {
+    echo $post->title;
+    foreach ($post->comments as $comment) {
+        echo $comment->body; // This triggers 1 query PER post
+    }
+}
+If there are 10 posts, this makes:
+
+1 query for all posts
+
+10 additional queries (1 per post to get its comments)
+
+Total = 11 queries (N+1 problem)
+
+⚡ Solution — Eager Loading (Good)
+Instead of loading related models later (lazily), you load them up front (eagerly).
+
+✅ Controller (Eager Loading)
+$posts = Post::with('comments')->get(); // 2 queries total
+
+foreach ($posts as $post) {
+    echo $post->title;
+    foreach ($post->comments as $comment) {
+        echo $comment->body; // No extra queries triggered here
+    }
+}
+✅ Queries behind the scenes:
+One for all posts
+
+One for all related comments
+→ Total = 2 queries, no matter how many posts you have. 🎯
