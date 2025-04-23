@@ -10,6 +10,9 @@
                 <b>Title</b> : {{$job['title']}}, <b>Salary</b> : {{$job['salary']}}<br></br>
             </a>
         @endforeach
+        <div>
+            {{ $jobs->links() }} {{-- this is the pagination --}}
+        </div>
     </div>
 </x-layout>
 
