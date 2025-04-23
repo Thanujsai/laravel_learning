@@ -12,8 +12,13 @@ Route::get('/', function () {
 });
 
 Route::get('/jobs', function () {
+    $jobs = Job::with('employer')->paginate(3);//using the Job class to get all the jobs, and also fetch the related employer in the same database query.//paginate shows the page numbers whereas simple paginate just shows 2 buttons next and previous
     return view('jobs', [
-        'jobs' => Job::all(),//using the Job class to get all the jobs
+        'jobs' => $jobs,//using the Job class to get all the jobs
+        //'jobs' => Job::all() queries the database for all jobs and returns them as a collection
+        //example:
+        //It does this for each and every job : select * from "employers" where "employers"."id" = 1 limit 1 which is not efficient, this is called lazy loading
+        //whereas Job::with('employer')->get(); this will do it in one query like this : select * from "employers" where "employers"."id" in (1, 2, 3, 4, 5, 6, 7, 8), this is caller eager loading
     ]);
 });
 

@@ -1,0 +1,92 @@
+Very identical queries are running multiple times.
+
+The N+1 problem happens when your app makes 1 query to get a list of items (like jobs), but for each item, it makes another query to get related data (like employer). That means:
+
+1 query for all jobs
+
++1 query per job to fetch its employer
+
+So if you have 10 jobs → that’s 11 queries
+
+
+Another solution is to prevent lazy loading by adding this line
+        Model::preventLazyLoading();
+
+in boot method of AppServiceProvider.
+
+
+.
+
+🐢 N+1 Problem — Lazy Loading (Bad)
+You have two models:
+
+Post model
+
+Comment model
+
+🧠 Relationships
+In Post.php:
+
+public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+🐌 Controller (Lazy Loading)
+$posts = Post::all(); // 1 query to fetch all posts
+
+foreach ($posts as $post) {
+    echo $post->title;
+    foreach ($post->comments as $comment) {
+        echo $comment->body; // This triggers 1 query PER post
+    }
+}
+If there are 10 posts, this makes:
+
+1 query for all posts
+
+10 additional queries (1 per post to get its comments)
+
+Total = 11 queries (N+1 problem)
+
+⚡ Solution — Eager Loading (Good)
+Instead of loading related models later (lazily), you load them up front (eagerly).
+
+✅ Controller (Eager Loading)
+$posts = Post::with('comments')->get(); // 2 queries total
+
+foreach ($posts as $post) {
+    echo $post->title;
+    foreach ($post->comments as $comment) {
+        echo $comment->body; // No extra queries triggered here
+    }
+}
+✅ Queries behind the scenes:
+One for all posts
+
+One for all related comments
+→ Total = 2 queries, no matter how many posts you have. 🎯
+
+
+
+Queries for eager loading: (efficient)
+
+    select * from "sessions" where "id" = 'bm5b9wBP49BmE3vMAQW2BxqEwdHhhadzbShjit56' limit 1
+    select * from "job_listings"
+    select * from "employers" where "employers"."id" in (1, 2, 3, 4, 5, 6, 7, 8)
+
+Queries for lazy loading:(n+1 problem)
+
+    select * from "sessions" where "id" = 'BSNXa96f7iKXWaH2sov2KQFzg9YGA5mhLqZR5wKD' limit 1
+    select * from "job_listings"
+    select * from "employers" where "employers"."id" = 1 limit 1
+    select * from "employers" where "employers"."id" = 2 limit 1
+    select * from "employers" where "employers"."id" = 3 limit 1
+    select * from "employers" where "employers"."id" = 4 limit 1
+    select * from "employers" where "employers"."id" = 5 limit 1
+    select * from "employers" where "employers"."id" = 6 limit 1
+    select * from "employers" where "employers"."id" = 7 limit 1
+    sselect * from "employers" where "employers"."id" = 8 limit 1
+
+less number of queries -> more efficient
+

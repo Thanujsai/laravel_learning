@@ -3,13 +3,19 @@
         Job Listings Page
     </x-slot:heading>
 
-    <ul>
+    <div class="space-y-4">
         @foreach ($jobs as $job){{-- getting this jobs variable from the endpoint defined in web.php --}}
-            <li>
-                <a href="/jobs/{{ $job['id'] }}" class="text-blue-500 hover:text-blue-700">
-                    <b>Title</b> : {{$job['title']}}, <b>Salary</b> : {{$job['salary']}}
-                </a>
-            </li>
+            <a href="/jobs/{{ $job['id'] }}" class="block px-4 py-6 border border-gray-200 rounded hover:text-[#8D6FFE]">
+                <div class="font-bold text-blue-500 text-sm"><b>Employer</b> : {{$job->employer->name}}</div>
+                <b>Title</b> : {{$job['title']}}, <b>Salary</b> : {{$job['salary']}}<br></br>
+            </a>
         @endforeach
-    </ul>
+        <div>
+            {{ $jobs->links() }} {{-- this is the pagination --}}
+        </div>
+    </div>
 </x-layout>
+
+<script>
+    console.log('jobs page')
+</script>
