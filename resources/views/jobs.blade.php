@@ -18,6 +18,4 @@
 
 <script>
     console.log('jobs page')
-    console.log(@json($job))
-    console.log(@json($jobs)); // now includes employer details
 </script>
