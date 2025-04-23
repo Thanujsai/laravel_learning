@@ -12,7 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('/jobs', function () {
-    $jobs = Job::with('employer')->paginate(3);//using the Job class to get all the jobs, and also fetch the related employer in the same database query.
+    $jobs = Job::with('employer')->paginate(3);//using the Job class to get all the jobs, and also fetch the related employer in the same database query.//paginate shows the page numbers whereas simple paginate just shows 2 buttons next and previous
     return view('jobs', [
         'jobs' => $jobs,//using the Job class to get all the jobs
         //'jobs' => Job::all() queries the database for all jobs and returns them as a collection
