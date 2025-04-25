@@ -11,7 +11,7 @@ class Job extends Model{ //to make a php class into the eloquent model it just n
     use HasFactory;//Hey, this model has an associated factory, and I might want to generate fake data using it.
     protected $table = "job_listings";//since the table name is not the same as the model name, we need to specify the table name, otherwise it's not necessary
 
-    protected $fillable = ['title', 'salary'];//these are the fields that we want to be mass assignable, so we can use the create method to create a new job
+    protected $fillable = ['employer_id', 'title', 'salary'];//these are the fields that we want to be mass assignable, so we can use the create method to create a new job
 
     public function employer()//a job listing belongs to an employer, that is the relation
     {
