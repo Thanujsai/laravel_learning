@@ -14,6 +14,8 @@ use App\Http\Controllers\PostController;//importing the PostController class
 // });
 
 Route::view('/','welcome');//this is the same as the above route, but this is a better way to do
+
+//Job controller routes
 Route::controller(JobController::class)->group(function() {
     Route::get('/jobs', 'index');//this will call the index method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
     Route::get('/jobs/create', 'create');//this should always be above the jobs/{id} route since the route is dynamic and will match any id, including the create route
@@ -27,6 +29,8 @@ Route::controller(JobController::class)->group(function() {
 
 Route::view('/contact', 'contact');
 
-//postcontroller routes
-Route::get('/posts', [PostController::class, 'index']);//this will call the index method of the PostController class, this is a better way to do it since it will be more organized and easier to maintain in the future
-Route::get('/posts/{id}', [PostController::class, 'show']);//this will call the show method of the PostController class, this is a better way to do it since it will be more organized and easier to maintain in the future
+//Post controller routes
+Route::controller(PostController::class)->group(function() {
+    Route::get('/posts', 'index');
+    Route::get('/posts/{id}', 'show');
+});
