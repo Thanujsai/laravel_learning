@@ -57,6 +57,11 @@ Route::get('/posts/{id}', function ($id){//endpoint with id var
 Route::post('/jobs',function() {
     //dd(request()->all());//this will dump the request data, and stop the execution of the code,request()->all() will get all the data from the request, and return it as an array
 
+    request()->validate([//this will validate the request data, and if it fails, it will redirect back to the previous page with the errors
+        'title' => ['required','min:3'],//the title is required, corresponding to the name of the input field in the form (name="title")
+        'salary' => ['required','numeric'],//the salary is required and must be a number
+    ]);//if this validation fails, it will redirect back to the previous page with the errors
+
     Job::create([//create a new job using the Job class
         'title' => request('title'),//request('title') will get the title from the request
         'salary' => request('salary'),
