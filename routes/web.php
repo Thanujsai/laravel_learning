@@ -1,121 +1,78 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Job;//importing the Job class
-use App\Models\Post;//importing the Post class
+use App\Models\Post; // importing the Post class
+use App\Http\Controllers\JobController; // importing the JobController class
+use App\Http\Controllers\PostController; // importing the PostController class
 
-Route::get('/', function () {
-    // $jobs = Job::all();
+// ----------------------------------
+// Welcome Page
+// ----------------------------------
 
-    // dd($jobs[0]->title);//to check if the jobs are being fetched, to just diplay the title of the first job
-    return view('welcome');//passing an array to the view
-});
+// Route::get('/', function () {
+//     // $jobs = Job::all();
+//     // dd($jobs[0]->title); // to check if the jobs are being fetched, to just display the title of the first job
+//     return view('welcome'); // passing an array to the view
+// });
 
-//index
-Route::get('/jobs', function () {
-    $jobs = Job::with('employer')->latest()->paginate(3);//using the Job class to get all the jobs, and also fetch the related employer in the same database query.//paginate shows the page numbers whereas simple paginate just shows 2 buttons next and previous,  3 here means 3 records must be there per page
-    return view('jobs.index', [
-        'jobs' => $jobs,//using the Job class to get all the jobs
-        //'jobs' => Job::all() queries the database for all jobs and returns them as a collection
-        //example:
-        //It does this for each and every job : select * from "employers" where "employers"."id" = 1 limit 1 which is not efficient, this is called lazy loading
-        //whereas Job::with('employer')->get(); this will do it in one query like this : select * from "employers" where "employers"."id" in (1, 2, 3, 4, 5, 6, 7, 8), this is caller eager loading
-    ]);
-});
+Route::view('/', 'welcome'); // this is the same as the above route, but this is a better way to do
 
-//create
-Route::get('/jobs/create', function () {//this should always be above the jobs/{id} route since the route is dynamic and will match any id, including the create route
-    return view('jobs.create');
-});
+// ----------------------------------
+// Contact Page
+// ----------------------------------
 
-//show
-Route::get('/jobs/{id}', function ($id){//endpoint with id var
-    $job = Job::with('tags')->find($id);//fetch the job with this ID, and also fetch its related tags in the same database query.
+Route::view('/contact', 'contact');
 
-    //dd($job);//to check if the id is working
-    return view('jobs.show',[
-        'job' => $job,//sending the prop job to the view
-    ]);
-});
+// ----------------------------------
+// Job Controller Routes
+// ----------------------------------
 
-Route::get('/contact', function () {
-    return view('contact');
-});
+// Route::controller(JobController::class)->group(function() {
+//     Route::get('/jobs', 'index'); // this will call the index method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
+//     Route::get('/jobs/create', 'create'); // this should always be above the jobs/{id} route since the route is dynamic and will match any id, including the create route
+//     Route::get('/jobs/{job}', 'show'); // endpoint with id var, wildcard({job}) and the parameter $job needs to be same, next the type
+//     Route::post('/jobs', 'store'); // this will call the store method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
+//     // throws a 419 page expired error, this is a CSRF error (cross-site request forgery)
+//     Route::get('/jobs/{job}/edit', 'edit'); // endpoint with id var
+//     Route::patch('/jobs/{job}', 'update'); // patch means update
+//     Route::delete('/jobs/{job}', 'destroy'); // delete means remove
+// });
 
-Route::get('/posts', function () {
-    return view('posts', [
-        'posts' => Post::all(),//using the Post class to get all the posts
-    ]);
-});
+Route::resource('jobs', JobController::class); // jobs is the resource name or uri, route resource registers all of the routes for a resource controller, this is a better way to do
 
-Route::get('/posts/{id}', function ($id){//endpoint with id var
-    $post = Post::with('tags')->find($id);//using the Post class to get the post with the id
+/*
+    When you use:
 
-    //dd($post);//to check if the id is working
-    return view('post',[
-        'post' => $post,//sending the prop post to the view
-    ]);
-});
+    Route::resource('jobs', JobController::class);
+    👉 Yes — it expects the JobController to have these specific method names:
 
-//store
-  Route::post('/jobs',function() {
-    //dd(request()->all());//this will dump the request data, and stop the execution of the code,request()->all() will get all the data from the request, and return it as an array
+    HTTP Verb    URI             Controller Method    Purpose
+    GET          /jobs           index()              Display a list of jobs
+    GET          /jobs/create    create()             Show a form to create a new job
+    POST         /jobs           store()              Save the new job
+    GET          /jobs/{job}     show()               Display a single job
+    GET          /jobs/{job}/edit edit()              Show a form to edit a job
+    PATCH/PUT    /jobs/{job}     update()             Update the job
+    DELETE       /jobs/{job}     destroy()            Delete the job
+*/
 
-    request()->validate([//this will validate the request data, and if it fails, it will redirect back to the previous page with the errors
-        'title' => ['required','min:3'],//the title is required, corresponding to the name of the input field in the form (name="title")
-        'salary' => ['required','numeric'],//the salary is required and must be a number
-    ]);//if this validation fails, it will redirect back to the previous page with the errors
+/*
+    If you don't want to generate a particular route, you can use the except method to exclude it:
+    Route::resource('jobs', JobController::class)->except(['create', 'edit']);
+    This will generate all the routes except the create and edit routes.
 
-    Job::create([//create a new job using the Job class
-        'title' => request('title'),//request('title') will get the title from the request
-        'salary' => request('salary'),
-        'employer_id' => 1
-    ]);
+    If you want to generate only a few routes, you can use the only method to include only those routes:
+    Route::resource('jobs', JobController::class)->only(['index', 'show']);
+    This will generate only the index and show routes.
+*/
 
-    return redirect('/jobs');//redirecting to the jobs page after creating the job
-});
-//throws a 419 page expired error, this is a CSRF error(cross-site request forgery)
+// ----------------------------------
+// Post Controller Routes
+// ----------------------------------
 
-//edit
-Route::get('/jobs/{id}/edit', function ($id){//endpoint with id var
-    $job = Job::with('tags')->find($id);//fetch the job with this ID, and also fetch its related tags in the same database query.
+// Route::controller(PostController::class)->group(function() {
+//     Route::get('/posts', 'index');
+//     Route::get('/posts/{id}', 'show');
+// });
 
-    //dd($job);//to check if the id is working
-    return view('jobs.edit',[
-        'job' => $job,//sending the prop job to the view
-    ]);
-});
-
-//update
-Route::patch('/jobs/{id}', function ($id){//patch means update
-    //validate the request data
-    request()->validate([
-        'title' => ['required', 'min:3'],
-        'salary' => ['required', 'numeric'],
-    ]);
-
-    //authorize
-    //update the job and persist
-    $job = Job::findOrFail($id);//using the findOrFail method to get the job with the id, if it doesn't exist, it will throw a 404 error
-
-    $job->update([
-        'title' => request('title'),
-        'salary' => request('salary'),
-    ]);
- 
-    //redirect to the jobs page
-    return redirect('/jobs/'.$job->id);//redirecting to the jobs page after updating the job
-    
-});
- 
-//delete
-Route::delete('/jobs/{id}', function ($id){//delete means remove
-    //authorize
-    //delete the job and persist
-    $job = Job::findOrFail($id);//using the findOrFail method to get the job with the id, if it doesn't exist, it will throw a 404 error
-
-    $job->delete();//delete the job
-
-    //redirect to the jobs page
-    return redirect('/jobs');//redirecting to the jobs page after deleting the job
-});
+Route::resource('posts', PostController::class); // posts is the resource name or uri, route resource registers all of the routes for a resource controller, this is a better way to do
