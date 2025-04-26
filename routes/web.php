@@ -14,14 +14,17 @@ use App\Http\Controllers\PostController;//importing the PostController class
 // });
 
 Route::view('/','welcome');//this is the same as the above route, but this is a better way to do
-Route::get('/jobs', [JobController::class, 'index']);//this will call the index method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
-Route::get('/jobs/create', [JobController::class, 'create']);//this should always be above the jobs/{id} route since the route is dynamic and will match any id, including the create route
-Route::get('/jobs/{job}', [JobController::class, 'show']);//endpoint with id var, wildcard({job}) and the parameter $job needs to be same, next the type
-Route::post('/jobs', [JobController::class, 'store']);//this will call the store method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
-//throws a 419 page expired error, this is a CSRF error(cross-site request forgery)
-Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);//endpoint with id var
-Route::patch('/jobs/{job}', [JobController::class, 'update']);//patch means update
-Route::delete('/jobs/{job}', [JobController::class, 'destroy']);//delete means remove
+Route::controller(JobController::class)->group(function() {
+    Route::get('/jobs', 'index');//this will call the index method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
+    Route::get('/jobs/create', 'create');//this should always be above the jobs/{id} route since the route is dynamic and will match any id, including the create route
+    Route::get('/jobs/{job}', 'show');//endpoint with id var, wildcard({job}) and the parameter $job needs to be same, next the type
+    Route::post('/jobs', 'store');//this will call the store method of the JobController class, this is a better way to do it since it will be more organized and easier to maintain in the future
+    //throws a 419 page expired error, this is a CSRF error(cross-site request forgery)
+    Route::get('/jobs/{job}/edit', 'edit');//endpoint with id var
+    Route::patch('/jobs/{job}', 'update');//patch means update
+    Route::delete('/jobs/{job}', 'destroy');//delete means remove
+});
+
 Route::view('/contact', 'contact');
 
 //postcontroller routes
