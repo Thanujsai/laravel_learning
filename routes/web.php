@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Post; // importing the Post class
-use App\Http\Controllers\JobController; // importing the JobController class
-use App\Http\Controllers\PostController; // importing the PostController class
+use App\Http\Controllers\JobController; 
+use App\Http\Controllers\PostController; 
+use App\Http\Controllers\RegisteredUserController; 
+use App\Http\Controllers\SessionController; 
 
 // ----------------------------------
 // Welcome Page
@@ -76,3 +78,9 @@ Route::resource('jobs', JobController::class); // jobs is the resource name or u
 // });
 
 Route::resource('posts', PostController::class); // posts is the resource name or uri, route resource registers all of the routes for a resource controller, this is a better way to do
+
+//Auth routes
+Route::get('/register', [RegisteredUserController::class, 'create']); 
+Route::post('/register', [RegisteredUserController::class, 'store']);  
+Route::get('/login', [SessionController::class, 'create']);
+Route::post('/login', [SessionController::class, 'store']);
