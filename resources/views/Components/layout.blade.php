@@ -38,10 +38,17 @@
           </div> 
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              @guest<!-- if you are a guest of the application then only display these things -->
+              @guest<!-- if you are a guest of the application then only display these things, if you're logged in dont display these things -->
                 <x-nav-link href="/login" :active="request()->is('login')">Login</x-nav-link>
                 <x-nav-link href="/register" class="ml-4" :active="request()->is('register')">Register</x-nav-link>
               @endguest
+
+              @auth<!-- if you are a user/authenticated of the application then only display these things, if you're logged out dont display these things -->
+                <form method="POST" action="/logout">
+                  @csrf
+                  <x-form-button>Log Out</x-form-button>
+                </form>
+              @endauth
             </div>
           </div>
           <div class="-mr-2 flex md:hidden">
