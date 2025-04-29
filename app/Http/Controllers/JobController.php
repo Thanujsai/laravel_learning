@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;//importing the Job class
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -52,6 +53,13 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
+        if(Auth::guest()) {//which means the user is not signed in
+            return redirect('/login');
+        }
+
+        if($job->employer->user->isNot(Auth::user())){//if the employer is not create by the user, then the user is not authorized to edit the job, the current logged in user should be the user_id of the employer then only one can edit the job
+            abort(403);//forbidden
+        }
         //dd($job);//to check if the id is working
         return view('jobs.edit',[
             'job' => $job,//sending the prop job to the view
