@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Employer>
@@ -17,7 +18,18 @@ class EmployerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->company()
+            'name' => fake()->company(),
+            'user_id' => User::factory(),
         ];
     }
 }
+
+/*
+    Laravel will:
+
+    Call User::factory()->create().
+
+    Insert a new user into the users table.
+
+    Use that new user's id as the user_id in the employers table.
+*/

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('employers', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\User::class);//to get the relation between users and employers table
             $table->string('name');
             $table->timestamps();
         });

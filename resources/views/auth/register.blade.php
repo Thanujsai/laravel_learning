@@ -4,7 +4,8 @@
     </x-slot:heading>
 
     <form method="POST" action="/register">{{-- this is the form for creating a new job, after submitting the form it make a post request to /jobs ---}}
-        @csrf {{-- this is a blade directive for CSRF token, it is used to protect against cross-site request forgery attacks --}}
+        @csrf
+        {{-- this is a blade directive for CSRF token, it is used to protect against cross-site request forgery attacks --}}
         <div class="space-y-12">
           <div class="border-b border-gray-900/10 pb-12">
       

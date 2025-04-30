@@ -4,7 +4,8 @@
     </x-slot:heading>
 
     <form method="POST" action="/jobs/{{ $job->id }}" class="space-y-12">{{-- this is the form for creating a new job, after submitting the form it make a post request to /jobs ---}}
-        @csrf {{-- this is a blade directive for CSRF token, it is used to protect against cross-site request forgery attacks --}}
+        @csrf
+        {{-- this is a blade directive for CSRF token, it is used to protect against cross-site request forgery attacks --}}
         @method('PATCH') {{-- this is a blade directive for method spoofing, it is used to make a PATCH request instead of POST, we dont have a PATCH request natively in laravel, there it goes to patch request instead of the post one --}}
 
         <div class="space-y-12">
