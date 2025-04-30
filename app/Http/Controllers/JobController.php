@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;//importing the Job class
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
@@ -44,11 +45,17 @@ class JobController extends Controller
             'salary' => ['required','numeric'],//the salary is required and must be a number
         ]);//if this validation fails, it will redirect back to the previous page with the errors
 
-        Job::create([//create a new job using the Job class
+        $job = Job::create([//create a new job using the Job class
             'title' => request('title'),//request('title') will get the title from the request
             'salary' => request('salary'),
             'employer_id' => 1
         ]);
+
+        //send the email to the user
+        Mail::to($job->employer->user)->send(//laravel directly fetches the email address off the user
+            new JobPosted($job)
+        );
+        
 
         return redirect('/jobs');//redirecting to the jobs page after creating the job
     }
