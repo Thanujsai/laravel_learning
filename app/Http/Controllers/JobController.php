@@ -58,7 +58,7 @@ class JobController extends Controller
         /* authorize method will  run the logic associated with the name of the policy method, in this case, edit-job.
             if it fails or returns false it will throw a 403 error, which means forbidden, and the user is not authorized to perform this action.
         */
-        //The definition of the edit-job method is in the App\Providers\AuthServiceProvider class, which is where we define the authorization logic for our application.
+        //The definition of the edit-job method is in the App\Providers\AppServiceProvider class, which is where we define the authorization logic for our application.
         //dd($job);//to check if the id is working
 
         // if(Gate::denies('edit-job', $job)) {
@@ -74,7 +74,7 @@ class JobController extends Controller
     {
 
         //authorize
-        Gate::authorize('edit-job', $job);
+        //Gate::authorize('edit', $job); i dont need this anymore since im using jobpolicy for authorization
 
         //validate the request data
         request()->validate([
@@ -96,7 +96,7 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         //authorize
-        Gate::authorize('edit-job', $job);
+        //Gate::authorize('edit', $job);
         
         //delete the job and persist
 

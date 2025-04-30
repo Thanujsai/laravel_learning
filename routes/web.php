@@ -44,10 +44,10 @@ Route::controller(JobController::class)->group(function () {
 
     Route::get('/jobs/{job}/edit', 'edit')
         ->middleware('auth')//middleware('auth') is used to protect routes by ensuring that only authenticated (logged-in) users can access them.
-        ->can('edit-job,job'); 
+        ->can('edit','job'); //This triggers the edit method in the JobPolicy class
         // endpoint with id var, the job in the can string refers to the wildcard variable job present in the get url /jobs/{job}/edit
         // The can() method is used to check if the currently authenticated user has the appropriate permissions to perform the requested action.
-        // The gate edit-job is defined in the AppServiceProvider class.
+        // The method edit is present in job policy
 
         /*
             ✅ middleware('auth') → Authentication
@@ -66,11 +66,11 @@ Route::controller(JobController::class)->group(function () {
 
     Route::patch('/jobs/{job}', 'update')
         ->middleware('auth')//middleware('auth') is used to protect routes by ensuring that only authenticated (logged-in) users can access them.
-        ->can('edit-job,job'); // patch means update
+        ->can('edit','job'); // patch means update
 
     Route::delete('/jobs/{job}', 'destroy')
         ->middleware('auth')//middleware('auth') is used to protect routes by ensuring that only authenticated (logged-in) users can access them.
-        ->can('edit-job,job'); ; // delete means remove
+        ->can('edit','job'); ; // delete means remove
 });
 
 // Route::resource('jobs', JobController::class)->middleware('auth'); 

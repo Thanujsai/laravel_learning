@@ -16,7 +16,7 @@
         @endforeach
     </ul>
 
-    @can('edit-job',$job){{-- this means the below div should be visible only if the user has permission to edit the job --}}
+    @can('edit',$job){{-- this means the below div should be visible only if the user has permission to edit the job, edit ability is defined in jobPolicy --}}
     <div class="flex gap-x-6">
         <p class="mt-6">
             <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
