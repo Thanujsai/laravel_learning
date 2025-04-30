@@ -55,7 +55,6 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        Gate::authorize('edit-job', $job);//this will check if the user is authorized to edit the job, if not, it will throw a 403 error
         /* authorize method will  run the logic associated with the name of the policy method, in this case, edit-job.
             if it fails or returns false it will throw a 403 error, which means forbidden, and the user is not authorized to perform this action.
         */

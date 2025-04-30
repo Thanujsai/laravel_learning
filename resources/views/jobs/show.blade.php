@@ -36,8 +36,5 @@
 
 <script>
     console.log('job page');
-    console.log(@json($job));
-    console.log(@json($job->tags));
-    console.log(@json($job->id));
 
 </script>
