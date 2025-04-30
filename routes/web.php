@@ -40,8 +40,8 @@ Route::view('/contact', 'contact');
 //     Route::delete('/jobs/{job}', 'destroy'); // delete means remove
 // });
 
-Route::resource('jobs', JobController::class); // jobs is the resource name or uri, route resource registers all of the routes for a resource controller, this is a better way to do
-
+Route::resource('jobs', JobController::class)->middleware('auth'); // jobs is the resource name or uri, route resource registers all of the routes for a resource controller, this is a better way to do
+//the middleware auth checks for the user to be logged in, if not, it will redirect to the login page
 /*
     When you use:
 
@@ -82,6 +82,6 @@ Route::resource('posts', PostController::class); // posts is the resource name o
 //Auth routes
 Route::get('/register', [RegisteredUserController::class, 'create']); 
 Route::post('/register', [RegisteredUserController::class, 'store']);  
-Route::get('/login', [SessionController::class, 'create']);
+Route::get('/login', [SessionController::class, 'create']); // this will name the route login, so that the above middleware can redirect to this route
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy'])->name('logout'); // this will name the route logout, so we can use it in the view
