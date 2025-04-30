@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;//importing the Job class
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 class JobController extends Controller
 {
@@ -53,14 +55,17 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        if(Auth::guest()) {//which means the user is not signed in
-            return redirect('/login');
-        }
-
-        if($job->employer->user->isNot(Auth::user())){//if the employer is not create by the user, then the user is not authorized to edit the job, the current logged in user should be the user_id of the employer then only one can edit the job
-            abort(403);//forbidden
-        }
+        Gate::authorize('edit-job', $job);//this will check if the user is authorized to edit the job, if not, it will throw a 403 error
+        /* authorize method will  run the logic associated with the name of the policy method, in this case, edit-job.
+            if it fails or returns false it will throw a 403 error, which means forbidden, and the user is not authorized to perform this action.
+        */
+        //The definition of the edit-job method is in the App\Providers\AuthServiceProvider class, which is where we define the authorization logic for our application.
         //dd($job);//to check if the id is working
+
+        // if(Gate::denies('edit-job', $job)) {
+        //     abort(403);
+        // }
+
         return view('jobs.edit',[
             'job' => $job,//sending the prop job to the view
         ]);
