@@ -52,7 +52,7 @@ class JobController extends Controller
         ]);
 
         //send the email to the user
-        Mail::to($job->employer->user)->send(//laravel directly fetches the email address off the user
+        Mail::to($job->employer->user)->queue(//laravel directly fetches the email address off the user, queue is better since mail takes some time to send a mail, instead push the mail into queue and send it later
             new JobPosted($job)
         );
         

@@ -2,13 +2,25 @@
 
 use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Route;
-use App\Models\Post; // importing the Post class
+use App\Models\Job;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\TranslateJob;
 
+Route::get('/test', function() {
+
+    // dispatch(function() {
+    //     logger('hello from the queue!');
+    // })->delay(5);
+
+    $job = Job::first(); 
+    TranslateJob::dispatch($job);
+
+    return 'Done';
+});
 // Route::get('test', function(){
 //     //return new \App\Mail\JobPosted();
 //     Mail::to('thanuj.sai14301@gmail.com')->send(//this does not send the email but will log in into laravel.log file present in storage/logs
